@@ -18,9 +18,10 @@ public class Country {
     private ServiceProvider serviceProvider;
 
     @OneToOne
-    @JoinColumn
     private User user;
 
+    public Country() {
+    }
     public int getId() {
         return id;
     }

@@ -24,6 +24,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(String username, String password, String countryName) throws Exception{
         User user = new User();
+        user.setConnected(false);
         user.setUsername(username);
         user.setPassword(password);
 
