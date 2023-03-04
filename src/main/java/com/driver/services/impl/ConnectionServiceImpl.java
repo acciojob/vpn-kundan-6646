@@ -25,8 +25,8 @@ public class ConnectionServiceImpl implements ConnectionService {
         User user = userRepository2.findById(userId).get();
         countryName = countryName.toUpperCase();
 
-        if(user.isConnected()) throw new Exception("Already connected");
-        else if (String.valueOf(user.getCountry().getCountryName()).equals(countryName)) {
+        if(user.getConnected()) throw new Exception("Already connected");
+        else if (String.valueOf(user.getOriginalCountry().getCountryName()).equals(countryName)) {
             return user;
         }else if (!userIsSubscribed(user.getServiceProviderList(), countryName)) {
             throw new Exception("Unable to connect");
@@ -53,7 +53,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     public User disconnect(int userId) throws Exception {
         User user = userRepository2.findById(userId).get();
 
-        if(!user.isConnected()) throw new Exception("Already disconnected");
+        if(!user.getConnected()) throw new Exception("Already disconnected");
         user.setConnected(false);
         user.setMaskedIp(null);
         userRepository2.save(user);
@@ -66,12 +66,12 @@ public class ConnectionServiceImpl implements ConnectionService {
         User receiver = userRepository2.findById(receiverId).get();
 
         //To communicate to the receiver, sender should be in the current country of the receiver.
-        String senderCountry = String.valueOf(sender.getCountry().getCountryName());
-        String receiverCountry = String.valueOf(receiver.getCountry().getCountryName());
+        String senderCountry = String.valueOf(sender.getOriginalCountry().getCountryName());
+        String receiverCountry = String.valueOf(receiver.getOriginalCountry().getCountryName());
 
         try {
-            if(sender.isConnected()) senderCountry = getCountryUsingMaskedIp(sender.getMaskedIp());
-            if(receiver.isConnected()) receiverCountry = getCountryUsingMaskedIp(receiver.getMaskedIp());
+            if(sender.getConnected()) senderCountry = getCountryUsingMaskedIp(sender.getMaskedIp());
+            if(receiver.getConnected()) receiverCountry = getCountryUsingMaskedIp(receiver.getMaskedIp());
         }catch (Exception e) {
             throw new Exception("Cannot establish communication");
         }
