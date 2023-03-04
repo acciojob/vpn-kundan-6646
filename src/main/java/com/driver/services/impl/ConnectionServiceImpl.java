@@ -111,7 +111,6 @@ public class ConnectionServiceImpl implements ConnectionService {
         hashMap.put("003","AUS");
         hashMap.put("004", "CHI");
         hashMap.put("005", "JPN");
-
         return hashMap.get(maskedIp);
     }
 }
