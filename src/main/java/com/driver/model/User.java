@@ -68,7 +68,7 @@ public class User {
     }
 
     public boolean getConnected() {
-        return connected;
+        return this.connected;
     }
 
     public void setConnected(boolean connected) {
